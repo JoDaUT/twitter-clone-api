@@ -29,6 +29,10 @@ export class UserService {
     return user;
   }
 
+  async findByEmail(email: string) {
+    return this.usersRepository.findOneBy({ email });
+  }
+
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`;
   // }

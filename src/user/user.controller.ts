@@ -7,6 +7,8 @@ import {
   Param,
   ParseIntPipe,
   HttpCode,
+  HttpException,
+  HttpStatus,
   // Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -19,8 +21,13 @@ export class UserController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-    console.log(typeof createUserDto.age);
+    const user = this.userService.findByEmail(createUserDto.email);
+    if (user) {
+      return new HttpException(
+        'User with that email already exists',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return this.userService.create(createUserDto);
   }
 
