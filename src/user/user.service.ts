@@ -36,4 +36,8 @@ export class UserService {
   // remove(id: number) {
   //   return `This action removes a #${id} user`;
   // }
+
+  async follow(id: number) {
+    console.log(id);
+  }
 }

@@ -5,6 +5,8 @@ import {
   Body,
   // Patch,
   Param,
+  ParseIntPipe,
+  HttpCode,
   // Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -41,4 +43,12 @@ export class UserController {
   // remove(@Param('id') id: string) {
   //   return this.userService.remove(+id);
   // }
+
+  @Post('/follow/:id')
+  @HttpCode(200)
+  follow(@Param('id', ParseIntPipe) id: number) {
+    console.log(typeof id);
+    this.userService.follow(id);
+    return;
+  }
 }
