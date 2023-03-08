@@ -2,16 +2,18 @@ import {
   Body,
   Controller,
   HttpCode,
-  Param,
   Post,
   UseGuards,
   Request,
   BadRequestException,
+  Get,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-import { CreateAuthDto, LoginDto, SignUpDto } from './dto/create-auth.dto';
+import { SignUpDto } from './dto/create-auth.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,11 +21,13 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
   ) {}
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
   @HttpCode(200)
   login(@Request() req) {
-    return req.user;
+    console.log({ user: req.user });
+    const user: User = req.user;
+    return this.authService.login(user.username, user.email);
   }
   @Post('/logout')
   @HttpCode(200)
@@ -43,5 +47,11 @@ export class AuthController {
   @HttpCode(200)
   validateToken() {
     return null;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }

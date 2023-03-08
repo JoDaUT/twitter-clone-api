@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { OmitType, PickType } from '@nestjs/mapped-types';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     @InjectRepository(Auth) private authRepository: Repository<Auth>,
+    private jwtService: JwtService,
   ) {}
 
   async signup(signUpData: SignUpDto) {
@@ -22,10 +24,6 @@ export class AuthService {
     authUser.username = signUpData.username;
     await this.authRepository.save(authUser);
     return this.usersService.create(signUpData);
-  }
-
-  logout() {
-    throw new Error('not implemented');
   }
 
   async validateUser(username: string, password: string) {
@@ -38,5 +36,10 @@ export class AuthService {
       return result;
     }
     return null;
+  }
+
+  async login(username: string, email: string) {
+    const payload = { username, email };
+    return this.jwtService.sign(payload);
   }
 }
