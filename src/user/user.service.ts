@@ -15,7 +15,11 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     this.usersRepository.save(createUserDto);
-    return createUserDto;
+    const userCreated = new CreateUserDto();
+    userCreated.age = createUserDto.age;
+    userCreated.email = createUserDto.email;
+    userCreated.username = createUserDto.username;
+    return userCreated;
   }
 
   // findAll() {
@@ -27,6 +31,10 @@ export class UserService {
   async findOne(id: number) {
     const user = await this.usersRepository.findOneBy({ id });
     return user;
+  }
+
+  async findByEmail(email: string) {
+    return this.usersRepository.findOneBy({ email });
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {

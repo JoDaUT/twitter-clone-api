@@ -1,17 +1,17 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
-@Unique(['email', 'username'])
-export class User {
+@Unique(['email'])
+export class Auth {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  username: string;
 
   @Column()
   email: string;
 
   @Column()
-  age: number;
+  username: string;
+
+  @Column()
+  hashedPassword: string;
 }

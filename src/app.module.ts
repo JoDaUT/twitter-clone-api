@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { Auth } from './auth/entities/auth.entity';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -19,11 +21,12 @@ import { User } from './user/entities/user.entity';
         username: configService.get('USERNAME'),
         password: configService.get('PASSWORD'),
         database: configService.get('DATABASE_NAME'),
-        entities: [User],
+        entities: [User, Auth],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
