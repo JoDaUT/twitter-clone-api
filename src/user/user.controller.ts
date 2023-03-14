@@ -58,4 +58,9 @@ export class UserController {
     this.userService.follow(id);
     return;
   }
+
+  @Get('/following')
+  followers() {
+    this.userService.getFollowing();
+  }
 }

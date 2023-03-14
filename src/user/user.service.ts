@@ -8,6 +8,9 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+  getFollowing() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     private configService: ConfigService,
     @InjectRepository(User) private usersRepository: Repository<User>,
@@ -47,5 +50,9 @@ export class UserService {
 
   async follow(id: number) {
     console.log(id);
+  }
+
+  getFollowers() {
+    throw new Error('Method not implemented.');
   }
 }
